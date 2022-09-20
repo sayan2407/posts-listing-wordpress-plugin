@@ -1,0 +1,20 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ .if_choose_grid {
+     display: none;
+     margin-left: 25px;
+ }
+
+ .items_row_hints {
+    width: 25px;
+    height: 25px;
+    background-color: red;
+    color: white;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    font-weight: 400;
+}
