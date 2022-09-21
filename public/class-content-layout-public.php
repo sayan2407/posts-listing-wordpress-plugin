@@ -106,7 +106,8 @@ class Content_Layout_Public {
 			'layout', [
 					'label'	=> __( 'Layout', 'content-layout' ),
 					'labels'	=>	__( 'Layouts', 'content-layout' ),
-					'public'	=>	true
+					'public'	=>	true,
+					'supports'	=>	['title']
 				]
 			);
 	

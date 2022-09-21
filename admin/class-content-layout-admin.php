@@ -114,6 +114,71 @@ class Content_Layout_Admin {
 			[ $this, 'custom_content_view' ],
 			'layout'
 		);
+
+		add_meta_box(
+			'filter_settings',
+			__( 'Filtered By Taxonomies', 'content-layout' ),
+			[ $this,  'filter_by_taxonomy' ],
+			'layout'
+		);
+
+		add_meta_box(
+			'post_type_settings',
+			__( 'Choose Post Types', 'content-layout' ),
+			[ $this,  'choose_post_types' ],
+			'layout'
+		);
+
+	}
+
+	public function choose_post_types() {
+		$args = array(
+			'public'   => true,
+			'_builtin' => false
+		 );
+		  
+		 $output = 'names'; // names or objects, note names is the default
+		 $operator = 'and'; // 'and' or 'or'
+		$all_post_types = get_post_types( $args, $output, $operator );
+		$all_post_types['posts'] = 'posts';
+		error_log('all_post_types '. print_r($all_post_types, 1));
+		?>
+		<div>
+			<strong><?php _e('choose post types : ', 'content-layout'); ?></strong><br><br>
+			<select name="choosen_post_types">
+				<option><?php _e('select post type', 'content-layout'); ?></option>
+				<?php
+				  foreach( $all_post_types as $val ) {
+					  ?>
+					  <option value="<?php echo $val; ?>"><?php echo $val; ?></option>
+					  <?php
+				  }
+				?>
+			</select>
+
+			<div>
+
+			</div>
+		</div>
+		<?php
+	}
+
+	public function filter_by_taxonomy() {
+		?>
+			<div>
+				<strong><?php _e('Select Taxonoy : ', 'content-layout'); ?></strong><br><br>
+				<div style="display: flex; align-items: center;">
+					<input type="checkbox" id="cat_taxonomy" name="select_taxonomy" value="0">
+					<label style="margin-right: 15px;" for="cat_taxonomy"><?php _e( 'Categories', 'content-layout' ); ?></label>
+
+					<input type="checkbox" id="tag_taxonomy" name="select_taxonomy" value="1">
+					<label for="tag_taxonomy"><?php _e( 'Tags', 'content-layout' ); ?></label>
+
+				</div>
+			
+
+			</div>
+		<?php
 	}
 
 	public function custom_content_view() {
@@ -149,6 +214,18 @@ class Content_Layout_Admin {
 				<label for="show_metafields"><?php _e('Show Metafields', 'content-layout'); ?></label><br>
 
 			</div>
+
+		</div><br>
+
+		<div>
+			<strong> <?php _e( 'Pagination: ', 'content-layout' ); ?> </strong><br>
+
+			<div>
+				<input type="checkbox" id="enable_pagination" name="has_pagination" value="1">
+				<label for="enable_pagination"> <?php _e( 'Enable Pagination', 'content-layout' ); ?> </label>
+			</div>
+
+		  
 
 		</div>
 
