@@ -158,6 +158,7 @@ class Content_Layout {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'custom_meta_boxes' );
+		$this->loader->add_action( 'save_post', $plugin_admin, 'save_custom_fields' );
 
 
 	}

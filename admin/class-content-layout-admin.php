@@ -100,34 +100,111 @@ class Content_Layout_Admin {
 
 	}
 
+	public function save_custom_fields() {
+
+		global $post;
+		// error_log( 'post ' . print_r( $post, 1 ) );
+
+		if( $post->post_type == "layout" ) {
+
+			$post_type_field = [];
+			$taxonomy_field = [];
+			$is_enable_pagination = [];
+			$format = [];
+			$field_settings = [];
+			$layout_view = [];
+
+			if ( isset( $_POST['choosen_post_types'] ) )
+				$post_type_field = $_POST['choosen_post_types'];
+
+			if ( isset( $_POST['select_taxonomy'] ) )
+				$taxonomy_field = $_POST['select_taxonomy'];
+
+		    if ( isset( $_POST['has_pagination'] ) )
+				$is_enable_pagination = $_POST['has_pagination'];
+
+			if ( isset( $_POST['content_format'] ) )
+				$format = $_POST['content_format'];
+			
+
+			if ( isset( $_POST['field_settings'] ) )
+				$field_settings = $_POST['field_settings'];
+
+			if ( isset( $_POST['layout_view'] ) )
+				$layout_view = $_POST['layout_view'];
+
+			error_log('post_type_field '. print_r( $post_type_field, 1 ));
+			error_log('taxonomy_field '. print_r( $taxonomy_field, 1 ));
+			error_log('is_enable_pagination '. print_r( $is_enable_pagination, 1 ));
+			error_log('format '. print_r( $format, 1 ));
+			error_log('field_settings '. print_r( $field_settings, 1 ));
+			error_log('layout_view '. print_r( $layout_view, 1 ));
+			
+		}
+	}
+
 	public function custom_meta_boxes() {
-		add_meta_box( 
-			'layout_view', 
-			__( 'Layout View', 'content-layout' ),
-			[ $this, 'custom_Layout_info' ],
-			'layout' 
-		);
+		$custom_metaboxes = [
+			'0'	=>	[
+				'id'	=>	'layout_view',
+				'title'	=>	__( 'Layout View', 'content-layout' ),
+				'callable'	=>	[ $this, 'custom_Layout_info' ],
+				'type'	=>	'layout'
+			],
+			'1'	=>	[
+				'id'	=>	'content_view',
+				'title'	=>	__( 'Content View', 'content-layout' ),
+				'callable'	=>	[ $this, 'custom_content_view' ],
+				'type'	=>	'layout'
+			],
+			'2'	=>	[
+				'id'	=>	'filter_settings',
+				'title'	=>	__( 'Filtered By Taxonomies', 'content-layout' ),
+				'callable'	=>	[ $this,  'filter_by_taxonomy' ],
+				'type'	=>	'layout'
+			],
+		'3'	=>	[
+				'id'	=>	'post_type_settings',
+				'title'	=>	__( 'Choose Post Types', 'content-layout' ),
+				'callable'	=>	[ $this,  'choose_post_types' ],
+				'type'	=>	'layout'
+				]
+		];
+		foreach( $custom_metaboxes as $value ) {
+			add_meta_box(
+				$value['id'],
+				$value['title'],
+				$value['callable'],
+				$value['type']
+			);
+		}
+		// add_meta_box( 
+		// 	'layout_view', 
+		// 	__( 'Layout View', 'content-layout' ),
+		// 	[ $this, 'custom_Layout_info' ],
+		// 	'layout' 
+		// );
 
-		add_meta_box(
-			'content_view',
-			__( 'Content View', 'content-layout' ),
-			[ $this, 'custom_content_view' ],
-			'layout'
-		);
+		// add_meta_box(
+		// 	'content_view',
+		// 	__( 'Content View', 'content-layout' ),
+		// 	[ $this, 'custom_content_view' ],
+		// 	'layout'
+		// );
 
-		add_meta_box(
-			'filter_settings',
-			__( 'Filtered By Taxonomies', 'content-layout' ),
-			[ $this,  'filter_by_taxonomy' ],
-			'layout'
-		);
+		// add_meta_box(
+		// 	'filter_settings',
+		// 	__( 'Filtered By Taxonomies', 'content-layout' ),
+		// 	[ $this,  'filter_by_taxonomy' ],
+		// 	'layout'
+		// );
 
-		add_meta_box(
-			'post_type_settings',
-			__( 'Choose Post Types', 'content-layout' ),
-			[ $this,  'choose_post_types' ],
-			'layout'
-		);
+		// add_meta_box(
+		// 	'post_type_settings',
+		// 	__( 'Choose Post Types', 'content-layout' ),
+		// 	[ $this,  'choose_post_types' ],
+		// 	'layout'
+		// );
 
 	}
 
@@ -168,10 +245,10 @@ class Content_Layout_Admin {
 			<div>
 				<strong><?php _e('Select Taxonoy : ', 'content-layout'); ?></strong><br><br>
 				<div style="display: flex; align-items: center;">
-					<input type="checkbox" id="cat_taxonomy" name="select_taxonomy" value="0">
+					<input type="checkbox" id="cat_taxonomy" name="select_taxonomy[]" value="0">
 					<label style="margin-right: 15px;" for="cat_taxonomy"><?php _e( 'Categories', 'content-layout' ); ?></label>
 
-					<input type="checkbox" id="tag_taxonomy" name="select_taxonomy" value="1">
+					<input type="checkbox" id="tag_taxonomy" name="select_taxonomy[]" value="1">
 					<label for="tag_taxonomy"><?php _e( 'Tags', 'content-layout' ); ?></label>
 
 				</div>
@@ -201,16 +278,16 @@ class Content_Layout_Admin {
 		<div>
 			<strong> <?php _e( 'Field Settings: ', 'content-layout' ); ?> </strong><br>
 			<div>
-				<input type="checkbox" id="show_thumbnail" name="field_settings" value="0">
+				<input type="checkbox" id="show_thumbnail" name="field_settings[]" value="0">
 				<label for="show_thumbnail"><?php _e('Show Thumbnail', 'content-layout'); ?></label><br>
 
-				<input type="checkbox" id="show_title" name="field_settings" value="0">
+				<input type="checkbox" id="show_title" name="field_settings[]" value="1">
 				<label for="show_title"><?php _e('Show Title', 'content-layout'); ?></label><br>
 
-				<input type="checkbox" id="show_excerpt" name="field_settings" value="0">
+				<input type="checkbox" id="show_excerpt" name="field_settings[]" value="2">
 				<label for="show_excerpt"><?php _e('Show Excerpt', 'content-layout'); ?></label><br>
 
-				<input type="checkbox" id="show_metafields" name="field_settings" value="0">
+				<input type="checkbox" id="show_metafields" name="field_settings[]" value="3">
 				<label for="show_metafields"><?php _e('Show Metafields', 'content-layout'); ?></label><br>
 
 			</div>
@@ -221,7 +298,7 @@ class Content_Layout_Admin {
 			<strong> <?php _e( 'Pagination: ', 'content-layout' ); ?> </strong><br>
 
 			<div>
-				<input type="checkbox" id="enable_pagination" name="has_pagination" value="1">
+				<input type="checkbox" id="enable_pagination" name="has_pagination[]" value="1">
 				<label for="enable_pagination"> <?php _e( 'Enable Pagination', 'content-layout' ); ?> </label>
 			</div>
 
