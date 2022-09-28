@@ -52,6 +52,8 @@ class Content_Layout_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		add_shortcode('content_layout', [$this, 'custom_shortcode']);
+
 	}
 
 	/**
@@ -107,10 +109,20 @@ class Content_Layout_Public {
 					'label'	=> __( 'Layout', 'content-layout' ),
 					'labels'	=>	__( 'Layouts', 'content-layout' ),
 					'public'	=>	true,
-					'supports'	=>	['title']
+					'supports'	=>	['title'],
+					'hierarchical'	=>	true
 				]
 			);
 	
 		}
+
+	public function custom_shortcode($arg)	{
+		error_log('arg ' . print_r($arg, 1));
+		ob_start();
+		?>
+		<p>Hii</p>
+		<?php
+		return ob_get_clean();
+	}
 
 }

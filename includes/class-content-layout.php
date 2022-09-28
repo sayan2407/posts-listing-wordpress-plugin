@@ -160,6 +160,13 @@ class Content_Layout {
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'custom_meta_boxes' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_custom_fields' );
 
+		$this->loader->add_action( 'manage_layout_posts_custom_column', $plugin_admin, 'add_extra_column', 2, 99 );
+		$this->loader->add_filter( 'manage_layout_posts_columns', $plugin_admin, 'add_extra_column_test' );
+		
+		// $this->loader->add_action( 'manage_movie_posts_custom_column', $plugin_admin, 'add_extra_column_test', 1, 99 );
+		
+		
+
 
 	}
 
@@ -178,6 +185,8 @@ class Content_Layout {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'init', $plugin_public, 'create_custom_menu' );
+		// $this->loader->add_shortcode( 'content_layout', $plugin_public, 'custom_shortcode' );
+		
 
 
 	}

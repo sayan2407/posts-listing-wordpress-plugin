@@ -11,4 +11,15 @@ jQuery(document).ready(function() {
 
 		console.log('value', val);
 	})
+
+	jQuery('.layout_shortcode').click( function() {
+
+		let id = jQuery(this).attr('id');
+		let temp = jQuery("<input>");
+		jQuery("body").append(temp);
+		temp.val(jQuery('#'+id).text()).select();
+		document.execCommand("copy");
+		temp.remove();
+		window.alert('Successfully Copied The Shortcode ' + jQuery('#'+id).text());
+	} )
 })
